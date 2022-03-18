@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">TJ² Scout Scanner</string>
+    <string name="welcome_text">Scan QR Code</string>
+    <string name="team_name">TJ² Robotics</string>
+    <string name="app_title">TJ² Robotics Scout Scanner</string>
+    <string name="import_button_label">Export</string>
+    <string name="scanned_labels">Scouter        Team       Match</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="confirm_delete_button">Delete</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_content_desc">Delete CSV File</string>
+    <string name="delete_title">Delete CSV File?</string>
+    <string name="delete_message">Are you sure you want to delete the CSV file?\nThis cannot be undone!</string>
+    <string name="settings_title">Settings</string>
+    <string name="export_filename_input">Export Filename</string>
+    <string name="export_filename_title">Filename:</string>
+</resources>
