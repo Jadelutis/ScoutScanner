@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean writeStoragePerms;
 
-    private final Pattern FORMAT_PATTERN = Pattern.compile("^(s=[\\w\\s]+;e=\\w+;l=\\w+;m=\\d+;r=[rb][1-3];t=\\d+;as=\\[\\w+\\];at=[YN];au=\\d+;al=\\d+;ac=[YN];tu=\\d+;tl=\\d+;wd=[YN];wbt=[YN];cif=\\w+;ss=(\\[(\\d+,?)*\\])?;c=\\w+;lsr=\\w+;be=[YN];cn=\\w+;ds=\\w+;dr=\\w+;ba=[YN];d=[YN];cf=[YN];all=[YN];co=[\\w\\s]*;cnf=\\w+)");
+//    private final Pattern FORMAT_PATTERN = Pattern.compile("^(s=[\\w\\s]+;e=\\w+;l=\\w+;m=\\d+;r=[rb][1-3];t=\\d+;as=\\[\\w+\\];at=[YN];au=\\d+;al=\\d+;ac=[YN];tu=\\d+;tl=\\d+;wd=[YN];wbt=[YN];cif=\\w+;ss=(\\[(\\d+,?)*\\])?;c=\\w+;lsr=\\w+;be=[YN];cn=\\w+;ds=\\w+;dr=\\w+;ba=[YN];d=[YN];cf=[YN];all=[YN];co=[\\w\\s]*;cnf=\\w+)");
+    private final Pattern FORMAT_PATTERN = Pattern.compile("^(s=[\\w\\s]+;e=\\w+;l=\\w+;m=\\d+;r=[rb][1-3];t=\\d+;as=\\[\\w+\\];at=[YN];au=\\d+;al=\\d+;ac=[YN];tu=\\d+;tl=\\d+;wd=[YN];cif=\\w+;ss=(\\[(\\d+,?)*\\])?;c=\\w+;be=[YN];cn=\\w+;ds=\\w+;dr=\\w+;ba=[YN];d=[YN];cf=[YN];all=[YN];co=[\\w\\s]*;cnf=\\w+)");
     private Pattern DATA_PATTERN;
 
     private static final String TAG = "MainActivity";
@@ -71,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
         importButton = findViewById(R.id.import_button);
         ImageButton deleteButton = findViewById(R.id.deleteButton);
         matchScoutInfo = new ArrayList<String>();
+
+        //DISABLE DELETE BUTTON FOR USE IN STANDS
+        deleteButton.setEnabled(false);
+
 
         importButton.setEnabled(false);
         scannedList.setMovementMethod(new ScrollingMovementMethod());
