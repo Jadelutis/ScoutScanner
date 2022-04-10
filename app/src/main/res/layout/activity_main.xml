@@ -55,10 +55,13 @@
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="14sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/import_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome_text"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="JD     88     1" />
 
     <Button
@@ -80,12 +83,26 @@
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/delete_content_desc"
         app:layout_constraintBottom_toBottomOf="@+id/import_button"
-        app:layout_constraintEnd_toEndOf="@+id/scanned_view"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/import_button"
         app:srcCompat="@drawable/ic_baseline_delete_forever_60"
         tools:ignore="ImageContrastCheck" />
+
+    <ListView
+        android:id="@+id/scoutView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/import_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
