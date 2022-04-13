@@ -29,4 +29,5 @@
     <string name="settings_title">Settings</string>
     <string name="export_filename_input">Export Filename</string>
     <string name="export_filename_title">Filename:</string>
+    <string name="delete_button">Delete Record</string>
 </resources>
