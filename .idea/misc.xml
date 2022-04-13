@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/jadel/AndroidStudioProjects/ScoutScanner/app/src/main/res/drawable/ic_baseline_delete_forever_24.xml" value="0.26" />
+        <entry key="..\:/Users/jadel/AndroidStudioProjects/ScoutScanner/app/src/main/res/drawable/ic_baseline_delete_forever_60.xml" value="0.26" />
+        <entry key="..\:/Users/jadel/AndroidStudioProjects/ScoutScanner/app/src/main/res/drawable/ic_baseline_delete_forever_60_bk.xml" value="0.338" />
+        <entry key="..\:/Users/jadel/AndroidStudioProjects/ScoutScanner/app/src/main/res/drawable/ic_baseline_settings_12.xml" value="0.26" />
         <entry key="..\:/Users/jadel/AndroidStudioProjects/ScoutScanner/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jadel/AndroidStudioProjects/ScoutScanner/app/src/main/res/layout/activity_record_info.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jadel/AndroidStudioProjects/ScoutScanner/app/src/main/res/layout/scouting_record.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jadel/AndroidStudioProjects/ScoutScanner/app/src/main/res/layout/settings_activity.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jadel/AndroidStudioProjects/ScoutScanner/app/src/main/res/menu/menu_items.xml" value="0.33" />

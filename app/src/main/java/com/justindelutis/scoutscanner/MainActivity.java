@@ -1,15 +1,15 @@
 package com.justindelutis.scoutscanner;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -33,18 +34,17 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView scannedList;
     private Button importButton;
-    private ArrayList<String> matchScoutInfo;
     private ListView scoutView;
     private ScoutAdapter scoutAdapter;
     private final String SCAN_INTENT = "com.justindelutis.scoutscanner.SCAN";
     private final String SCAN_DATA = "com.symbol.datawedge.data_string";
     private final String LABEL_TYPE = "com.symbol.datawedge.label_type";
     private final String QR_LABEL = "LABEL-TYPE-QRCODE";
-    private final String SCAN_TEXT = "com.justindelutis.scoutscanner.SCANNED_SCOUT_INFO";
     private final String SCOUT_ARRAY = "com.justindelutis.scoutscanner.SCOUTING_ARRAY_LIST";
     private final String BUTTON_STATUS = "com.justindelutis.scoutscanner.BUTTON_STATUS";
+    public static final String RECORD_INFO_ARRAY = "com.justindelutis.scoutscanner.RECORD_INFO_ARRAY";
+    public static final String RECORD_POSITION = "com.justindelutis.scoutscanner.RECORD_POSITION";
     private ArrayList<ScoutRecord> scoutingArray;
     private final String CSV_FILE = "/scout.csv";
     private final String EXPORT_PATH = Environment.DIRECTORY_DOWNLOADS + CSV_FILE;
@@ -63,19 +63,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TextView appTitle = findViewById(R.id.app_title);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.scoutingArray = new ArrayList<ScoutRecord>();
         this.scoutAdapter = new ScoutAdapter(this, R.layout.scouting_record, scoutingArray);
         this.scoutView = findViewById(R.id.scoutView);
         scoutView.setAdapter(scoutAdapter);
+        scoutView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent i = new Intent();
+                i.setClass(getApplicationContext(), RecordInfo.class);
+                i.putExtra(RECORD_INFO_ARRAY, scoutingArray.get(position));
+                i.putExtra(RECORD_POSITION, position);
+                startActivityForResult(i, 411);
+            }
+        });
+
         importButton = findViewById(R.id.import_button);
-        ImageButton deleteButton = findViewById(R.id.deleteButton);
-
-        //DISABLE DELETE BUTTON FOR USE IN STANDS
-        deleteButton.setEnabled(false);
-
-
         importButton.setEnabled(false);
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,39 +95,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton settings = findViewById(R.id.settingsButton);
+        settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.app.AlertDialog.Builder build = new AlertDialog.Builder(view.getContext())
-                    .setCancelable(true)
-                    .setTitle(R.string.delete_title)
-                    .setMessage(R.string.delete_message)
-                    .setPositiveButton(R.string.confirm_delete_button,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    File DOWNLOADS_EXPORT = Environment.getExternalStoragePublicDirectory(EXPORT_PATH);
-                                    boolean deleted = DOWNLOADS_EXPORT.delete();
-                                    scannedList.setText("");
-                                    Log.d(TAG, "onClick: Delete Clicked: deleted=" + deleted);
-                                    if (deleted) {
-                                        Toast.makeText(view.getContext(), "CSV File Deleted!", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(view.getContext(), "CSV File Does Not Exist!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            })
-                    .setNegativeButton(R.string.cancel_button,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Log.d(TAG, "onClick: Delete Action Cancelled!");
-                                }
-                            });
-                android.app.AlertDialog dialog = build.create();
-                dialog.show();
+                //something
             }
         });
+
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == 411) {
+            assert data != null;
+            if (!data.getBooleanExtra(RecordInfo.DELETE_FLAG, false)) {
+                return;
+            }
+            int deletePosition = data.getIntExtra(RecordInfo.RECORD_POSITION_DELETE, -1);
+            if(deletePosition != -1) {
+                scoutingArray.remove(deletePosition);
+                if(scoutingArray.size() == 0) {
+                    importButton.setEnabled(false);
+                }
+                scoutAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

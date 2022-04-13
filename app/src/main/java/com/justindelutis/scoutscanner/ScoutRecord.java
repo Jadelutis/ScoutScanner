@@ -1,14 +1,23 @@
 package com.justindelutis.scoutscanner;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
-public class ScoutRecord {
+import java.io.Serializable;
+
+public class ScoutRecord implements Serializable {
+    private static final String TAG = "ScoutRecord";
     private String[] scoutData;
     private final String originalScan;
 
     public ScoutRecord(String scoutData) {
         this.originalScan = scoutData;
-        String[] semiSplit = scoutData.split(";");
+        parseData();
+    }
+
+    public void parseData() {
+        String[] semiSplit = this.originalScan.split(";");
         this.scoutData = new String[semiSplit.length];
         for(int i = 0; i<semiSplit.length; i++) {
             if(semiSplit[i].indexOf("=") != semiSplit[i].length()-1) {
@@ -32,6 +41,7 @@ public class ScoutRecord {
     }
 
     public int getMatch() {
+        Log.d(TAG, "getMatch: Match: " + this.scoutData[3]);
         return Integer.parseInt(this.scoutData[3]);
     }
 

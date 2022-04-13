@@ -68,6 +68,7 @@
         android:id="@+id/import_button"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:text="@string/import_button_label"
@@ -76,21 +77,8 @@
         android:textStyle="bold"
         app:cornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
+        app:layout_constraintEnd_toEndOf="@+id/scanned_view"
         app:layout_constraintStart_toStartOf="@+id/scanned_view" />
-
-    <ImageButton
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/delete_content_desc"
-        app:layout_constraintBottom_toBottomOf="@+id/import_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/import_button"
-        app:srcCompat="@drawable/ic_baseline_delete_forever_60"
-        tools:ignore="ImageContrastCheck" />
 
     <ListView
         android:id="@+id/scoutView"
@@ -103,6 +91,18 @@
         app:layout_constraintBottom_toTopOf="@+id/import_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text">
+
+    </ListView>
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:contentDescription="Settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_settings_12" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
