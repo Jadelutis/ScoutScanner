@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -47,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String RECORD_POSITION = "com.justindelutis.scoutscanner.RECORD_POSITION";
     private ArrayList<ScoutRecord> scoutingArray;
     private final String CSV_FILE = "/scout.csv";
+    private final String DEBUG_FILE = "/scanned.txt";
     private final String EXPORT_PATH = Environment.DIRECTORY_DOWNLOADS + CSV_FILE;
+    private final String DEBUG_PATH = Environment.DIRECTORY_DOWNLOADS + DEBUG_FILE;
     private boolean writeStoragePerms;
     private final Pattern FORMAT_PATTERN = Pattern.compile("^(s=[^;]*;.*)");
     private static final String TAG = "MainActivity";
@@ -63,9 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        TextView appTitle = findViewById(R.id.app_title);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView welcomeText = findViewById(R.id.welcome_text);
         this.scoutingArray = new ArrayList<ScoutRecord>();
         this.scoutAdapter = new ScoutAdapter(this, R.layout.scouting_record, scoutingArray);
         this.scoutView = findViewById(R.id.scoutView);
@@ -103,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Animation out = new AlphaAnimation(1.0f, 0.0f);
+        out.setRepeatCount(Animation.INFINITE);
+        out.setRepeatMode(Animation.REVERSE);
+        out.setDuration(2000);
+        welcomeText.startAnimation(out);
+
     }
 
 
@@ -134,6 +144,11 @@ public class MainActivity extends AppCompatActivity {
             if(!(scannedData==null || scannedData.equals("")) && scannedType.equals(QR_LABEL)) {
                 Matcher matchForm = FORMAT_PATTERN.matcher(scannedData);
                 if(matchForm.find()) {
+                    try {
+                        writeToFile(scannedData);
+                    } catch(IOException e) {
+                        Log.e(TAG, "onNewIntent: Error: IOException " + e.getMessage());
+                    }
                     ScoutRecord newRecord = new ScoutRecord(scannedData);
                     scoutingArray.add(newRecord);
                     Log.d(TAG, "handleScanAction: New Scout Record Added!\n" + newRecord);
@@ -188,6 +203,19 @@ public class MainActivity extends AppCompatActivity {
         scoutAdapter.notifyDataSetChanged();
         importButton.setEnabled(false);
         Toast.makeText(MainActivity.this, "Exported to /sdcard/Download/scout.csv", Toast.LENGTH_SHORT).show();
+    }
+
+    private void writeToFile(String input) throws IOException {
+        File DEBUG_EXPORT = Environment.getExternalStoragePublicDirectory(DEBUG_PATH);
+        FileWriter fw = null;
+        if(DEBUG_EXPORT.exists()) {
+            fw = new FileWriter(DEBUG_EXPORT, true);
+        } else {
+            fw = new FileWriter(DEBUG_EXPORT);
+        }
+        String appendLine = input + "\n";
+        fw.append(appendLine);
+        fw.close();
     }
 
     private boolean verifyStoragePermissions(Activity act) {
