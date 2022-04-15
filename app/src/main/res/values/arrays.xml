@@ -9,4 +9,12 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+    <string-array name="input_methods">
+        <item>Symbol Datawedge</item>
+        <item>HID Barcode Scanner</item>
+    </string-array>
+    <string-array name="input_method_values">
+        <item>intent-datawedge</item>
+        <item>keyboard</item>
+    </string-array>
 </resources>

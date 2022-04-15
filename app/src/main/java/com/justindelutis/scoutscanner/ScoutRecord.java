@@ -5,27 +5,48 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class ScoutRecord implements Serializable {
+    private static final String[] categoryNames = {"Scouter", "Event", "Level", "Match", "Robot", "Team #", "Auto Position", "Taxi", "Auto Upper", "Auto Lower", "Auto Acquired",
+                                                    "Teleop Upper", "Teleop Lower", "Defended", "Cargo Intake", "Shooting Spot", "Climb", "Climb Before End", "Num Climbed",
+                                                    "Driver Skill", "Defense Rate", "Spicy", "Died", "Foul", "Partner", "Comments", "Confidence"};
+    private static final String[] barcodeKeys = {"s", "e", "l", "m", "r", "t", "as", "at", "au", "al", "ac", "tu", "tl", "wd", "cif", "ss", "c", "be", "cn", "ds", "dr", "ba", "d", "cf",
+                                                    "all", "co", "cnf"};
     private static final String TAG = "ScoutRecord";
     private String[] scoutData;
     private final String originalScan;
+    private HashMap<String, String> scoutHashData;
 
     public ScoutRecord(String scoutData) {
         this.originalScan = scoutData;
+        this.scoutHashData = new HashMap<String, String>();
+        for(String i:barcodeKeys) {
+            scoutHashData.put(i, "");
+        }
         parseData();
     }
 
     public void parseData() {
+//        String[] semiSplit = this.originalScan.split(";");
+//        this.scoutData = new String[semiSplit.length];
+//        for(int i = 0; i<semiSplit.length; i++) {
+//            if(semiSplit[i].indexOf("=") != semiSplit[i].length()-1) {
+//                this.scoutData[i] = semiSplit[i].split("=")[1];
+//            } else {
+//                this.scoutData[i] = "";
+//            }
+//        }
+
         String[] semiSplit = this.originalScan.split(";");
-        this.scoutData = new String[semiSplit.length];
         for(int i = 0; i<semiSplit.length; i++) {
             if(semiSplit[i].indexOf("=") != semiSplit[i].length()-1) {
-                this.scoutData[i] = semiSplit[i].split("=")[1];
-            } else {
-                this.scoutData[i] = "";
+                String[] splitEquals = semiSplit[i].split("=");
+                scoutHashData.put(splitEquals[0], splitEquals[1]);
             }
         }
+
+
     }
 
     public String getOriginalScan() {
@@ -33,20 +54,20 @@ public class ScoutRecord implements Serializable {
     }
 
     public String getScouter() {
-        return this.scoutData[0];
+        return this.scoutHashData.get(barcodeKeys[0]);
     }
 
     public String getEvent() {
-        return this.scoutData[1];
+        return this.scoutHashData.get(barcodeKeys[1]);
     }
 
     public int getMatch() {
-        Log.d(TAG, "getMatch: Match: " + this.scoutData[3]);
-        return Integer.parseInt(this.scoutData[3]);
+        Log.d(TAG, "getMatch: Match: " + this.scoutHashData.get(barcodeKeys[3]));
+        return Integer.parseInt(this.scoutHashData.get(barcodeKeys[3]));
     }
 
     public String getRobotPosition() {
-        char[] charPosi = this.scoutData[4].toCharArray();
+        char[] charPosi = this.scoutHashData.get(barcodeKeys[4]).toCharArray();
         String robotPosition = "";
         switch(charPosi[0]) {
             case 'b':
@@ -65,7 +86,7 @@ public class ScoutRecord implements Serializable {
     }
 
     public int getTeam() {
-        return Integer.parseInt(this.scoutData[5]);
+        return Integer.parseInt(this.scoutHashData.get(barcodeKeys[5]));
     }
 
     @NonNull
@@ -76,10 +97,10 @@ public class ScoutRecord implements Serializable {
 
     public String getExportable() {
         StringBuilder expBuild = new StringBuilder();
-        for(int i = 0; i<scoutData.length; i++) {
-            String quoted = "\"" + scoutData[i] +"\"";
+        for(int i = 0; i<barcodeKeys.length; i++) {
+            String quoted = "\"" + scoutHashData.get(barcodeKeys[i]) +"\"";
             expBuild.append(quoted);
-            if(i != scoutData.length-1) {
+            if(i != barcodeKeys.length-1) {
                 expBuild.append(",");
             } else {
                 expBuild.append("\n");

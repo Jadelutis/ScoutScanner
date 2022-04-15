@@ -7,4 +7,13 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/export_filename_title" />
+    <PreferenceCategory android:title="Input Method">
+
+    </PreferenceCategory>
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/input_methods"
+        android:entryValues="@array/input_method_values"
+        android:key="list_preference_1"
+        android:title="List preference" />
 </PreferenceScreen>
